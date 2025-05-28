@@ -1,0 +1,29 @@
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+
+// CONFIG
+dotenv.config();
+const app = express();
+const PORT = process.env.PORT;
+mongoose.connect(process.env.CONNECTION_STRING);
+const database = mongoose.connection;
+
+// MIDDLEWARES
+app.use(express.json());
+
+// ROUTES
+
+database.on("error", (error) => {
+  console.error(error);
+});
+
+database.once("connected", () => {
+  console.log("DB connected");
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+});
+
+// ERROR HANDLER
+// app.use(errorHandler)
