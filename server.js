@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import errorHandler from "./middlewares/errorHandler";
 
 // CONFIG
 dotenv.config();
@@ -26,4 +27,4 @@ database.once("connected", () => {
 });
 
 // ERROR HANDLER
-// app.use(errorHandler)
+app.use(errorHandler);
