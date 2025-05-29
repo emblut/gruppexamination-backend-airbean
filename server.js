@@ -1,7 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import errorHandler from "./middlewares/errorHandler";
+import express from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import errorHandler from './middlewares/errorHandler.js';
+
+import menuRouter from './routes/menu.js';
 
 // CONFIG
 dotenv.config();
@@ -14,13 +16,14 @@ const database = mongoose.connection;
 app.use(express.json());
 
 // ROUTES
+app.use('/api/menu', menuRouter);
 
-database.on("error", (error) => {
+database.on('error', (error) => {
   console.error(error);
 });
 
-database.once("connected", () => {
-  console.log("DB connected");
+database.once('connected', () => {
+  console.log('DB connected');
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
   });
