@@ -1,8 +1,8 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import errorHandler from './middlewares/errorHandler.js';
-
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import errorHandler from "./middlewares/errorHandler.js";
+import authRouter from "./routes/auth.js";
 import menuRouter from './routes/menu.js';
 
 // CONFIG
@@ -16,6 +16,7 @@ const database = mongoose.connection;
 app.use(express.json());
 
 // ROUTES
+app.use("/api/auth", authRouter);
 app.use('/api/menu', menuRouter);
 
 database.on('error', (error) => {
