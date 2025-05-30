@@ -1,15 +1,26 @@
 import { Router } from 'express';
-import Product from '../models/product.js';
-import errorHandler from '../middlewares/errorHandler.js';
+import { getAllProducts } from '../services/products.js';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+// GET all products
+router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    const result = await getAllProducts();
+
+    if (result) {
+      res.status(200).json({
+        success: true,
+        products: result,
+      });
+    } else {
+      next({
+        status: 404,
+        message: 'No products found',
+      });
+    }
   } catch (error) {
-    errorHandler(error, req, res);
+    next(error);
   }
 });
 
