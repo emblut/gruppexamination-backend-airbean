@@ -5,7 +5,8 @@ import validateAuthBody from "../middlewares/validateAuthBody.js";
 
 const router = Router();
 
-router.post('/login', async (req, res) =>{
+// LOGIN
+router.post('/login', validateAuthBody, async (req, res) =>{
     const { username, password} = req.body;
 
     try{
@@ -22,7 +23,7 @@ router.post('/login', async (req, res) =>{
 
         res.json({
             success: true,
-            message: 'Inlog was a success',
+            message: 'Login successful',
             user:{
                 userId: user.userId,
                 username: user.username
@@ -37,6 +38,7 @@ router.post('/login', async (req, res) =>{
     }
 })
 
+// REGISTER
 router.post('/register', validateAuthBody, async (req, res) =>{
     const { username, password } = req.body;
 
@@ -54,7 +56,7 @@ router.post('/register', validateAuthBody, async (req, res) =>{
 
         res.status(201).json({
             success: true,
-            message: "Register was an success, user is made!",
+            message: "Registration successful!",
             user: {
                 username,
                 userId
@@ -69,5 +71,14 @@ router.post('/register', validateAuthBody, async (req, res) =>{
         })
     }
 })
+
+// LOGOUT
+router.get('/logout', (_req, res) => {
+    global.user = null;
+    res.json({
+        success: true,
+        message: 'Logged out successfully',
+    });
+});
 
 export default router;
