@@ -8,7 +8,7 @@ const router = Router();
 //GET all carts
 
 // GET a users cart
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const cart = await getOrCreateCart(id);
@@ -17,8 +17,8 @@ router.get('/:id', async (req, res) => {
       cart: cart,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
+    next({
+      status: 500,
       message: 'Could not get or create cart',
       error: error.message,
     });
@@ -45,7 +45,7 @@ router.put('/', async (req, res) => {
   } else {
     let { guestId, prodId, qty } = req.body;
     const product = await getProduct(prodId);
-    console.log(product)
+    console.log(product);
     if (!guestId) {
       guestId = `guest-${uuid().substring(0, 5)}`;
     }
