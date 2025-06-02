@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import errorHandler from './middlewares/errorHandler.js';
 import authRouter from './routes/auth.js';
 import menuRouter from './routes/menu.js';
+import cartRouter from './routes/cart.js';
 
 // CONFIG
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 // ROUTES
 app.use('/api/auth', authRouter);
 app.use('/api/menu', menuRouter);
+app.use('/api/cart', cartRouter);
 
 database.on('error', (error) => {
   console.error(error);

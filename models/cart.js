@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const cartItemSchema = new Schema({
-  productId: String,
-  name: String,
+  prodId: String,
+  title: String,
   price: Number,
   qty: Number,
 });
