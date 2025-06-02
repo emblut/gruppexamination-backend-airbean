@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const orderItemSchema = new Schema({
   prodId: String,
-  name: String,
+  title: String,
   price: Number,
   qty: Number,
 });
@@ -21,6 +21,9 @@ const orderSchema = new Schema(
       unique: true
     },
     items: [orderItemSchema],
+    totalPrice: Number,
+    orderTime: Number
+
   },
   { timestamps: true }
 );

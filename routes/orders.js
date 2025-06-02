@@ -1,8 +1,10 @@
 import { Router } from "express";
-import Order from "../models/order.js";
+import Order from "../models/Order.js";
 import Cart from "../models/cart.js";
 import { v4 as uuid } from "uuid";
 import { getCartById } from "../services/cart.js";
+import { calculateTotal } from "../utils/cartUtils.js";
+import { calculateTime } from "../utils/orderUtils.js";
 
 const router = Router();
 
@@ -19,11 +21,14 @@ router.post("/", async (req, res, next) => {
       message: "Your cart is empty",
     });
   }
-
+  
   const newOrder = new Order({
     orderId: `order-${uuid().slice(0, 8)}`,
     userId,
     items: cart.items,
+    totalPrice: calculateTotal(cart),
+    orderTime: calculateTime(cart)
+
   });
 
   await newOrder.save();
@@ -34,7 +39,7 @@ router.post("/", async (req, res, next) => {
   res.status(201).json({
     success: true,
     message: "Order placed successfully",
-    order: newOrder,
+    order: newOrder
   });
 
 });
