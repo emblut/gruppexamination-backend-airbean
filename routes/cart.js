@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getProduct } from '../services/products.js';
 import { updateCart, getOrCreateCart } from '../services/cart.js';
 import { v4 as uuid } from 'uuid';
+import { calculateTotal } from '../utils/cartUtils.js';
 
 const router = Router();
 
@@ -12,9 +13,12 @@ router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const cart = await getOrCreateCart(id);
+    const total = calculateTotal(cart);
+
     res.status(200).json({
       success: true,
-      cart: cart,
+      cart,
+      total
     });
   } catch (error) {
     next({
