@@ -1,5 +1,15 @@
 import Cart from '../models/cart.js';
 
+export async function getCartById(userId){
+  try{
+    let cart = await Cart.findOne({ cartId: userId });
+    return cart
+  }catch(error){
+    console.log(error.message)
+    return null
+  }
+}
+
 export async function getOrCreateCart(userId) {
   try {
     let cart = await Cart.findOne({ cartId: userId });
