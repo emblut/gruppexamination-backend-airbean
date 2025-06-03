@@ -24,7 +24,7 @@ app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
 
 database.on('error', (error) => {
-  console.error(error);
+
 });
 
 database.once('connected', () => {
