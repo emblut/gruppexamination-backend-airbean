@@ -1,84 +1,70 @@
-import { Router } from "express";
-import User from "../models/user.js";
-import { v4 as uuidv4 } from 'uuid';
-import validateAuthBody from "../middlewares/validateAuthBody.js";
+import { Router } from 'express';
+import validateAuthBody from '../middlewares/validateAuthBody.js';
+import { checkIfUsernameExists, registerUser } from '../services/users.js';
 
 const router = Router();
 
 // LOGIN
-router.post('/login', validateAuthBody, async (req, res) =>{
-    const { username, password} = req.body;
+router.post('/login', validateAuthBody, async (req, res, next) => {
+  const { username, password } = req.body;
+  const user = await checkIfUsernameExists(username);
 
-    try{
-        const user = await User.findOne({ username });
-
-        if(!user || user.password !== password){
-            return res.status(401).json({
-                success: false,
-                message: 'Wrong username or password'
-            })
-        }
-
-        global.user = user;
-
-        res.json({
-            success: true,
-            message: 'Login successful',
-            user:{
-                userId: user.userId,
-                username: user.username
-            }
-        })
-    }catch(error){
-        console.log('Login error:', error);
-        res.status(500).json({
-            success: false,
-            message : "Servererror when logging in"
-        })
-    }
-})
+  if (user && user.password === password) {
+    global.user = user;
+    res.json({
+      success: true,
+      message: 'Login successful',
+      user: {
+        userId: user.userId,
+        username: user.username,
+      },
+    });
+  } else {
+    next({
+      status: 401,
+      message: 'Wrong username or password',
+    });
+  }
+});
 
 // REGISTER
-router.post('/register', validateAuthBody, async (req, res) =>{
-    const { username, password } = req.body;
+router.post('/register', validateAuthBody, async (req, res, next) => {
+  const { username, password } = req.body;
+  const isUsernameTaken = await checkIfUsernameExists(username);
 
-    const shortUuid = uuidv4().split('-')[0];
-    const userId = `user-${shortUuid}`;
+  if (isUsernameTaken) {
+    next({
+      status: 409,
+      message: 'Username already taken',
+    });
+  }
 
-    try{
-        const newUser = new User({
-            username,
-            password,
-            userId  
-        })
+  const newUser = await registerUser(username, password);
 
-        await newUser.save()
-
-        res.status(201).json({
-            success: true,
-            message: "Registration successful!",
-            user: {
-                username,
-                userId
-            }
-        });
-
-    }catch(error){
-        console.error('Register error:', error);
-        res.status(500).json({
-            success: false,
-            message: "Could not register the new user"
-        })
-    }
-})
+  if (newUser) {
+    res.status(201).json({
+      success: true,
+      message: 'Registration successful!',
+      user: {
+        username,
+        userId: newUser.userId,
+      },
+    });
+  } else {
+    next({
+      status: 500,
+      message: 'Could not register new user',
+    });
+  }
+});
 
 // LOGOUT
 router.get('/logout', (_req, res) => {
-    global.user = null;
-    res.json({
-        success: true,
-        message: 'Logged out successfully',
-    });
+  global.user = null;
+  res.json({
+    success: true,
+    message: 'Logged out successfully',
+  });
 });
 
 export default router;

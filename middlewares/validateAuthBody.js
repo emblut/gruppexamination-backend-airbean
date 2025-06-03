@@ -6,13 +6,13 @@ export default function validateAuthBody(req, res, next) {
     } else {
       res.status(400).json({
         success: false,
-        message: "Both username and password required",
+        message: 'Both username and password required',
       });
     }
   } else {
     res.status(400).json({
       success: false,
-      message: "No body found in request",
+      message: 'No body found in request',
     });
   }
 }

@@ -18,12 +18,11 @@ const orderSchema = new Schema(
     orderId: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     items: [orderItemSchema],
     totalPrice: Number,
-    orderTime: Number
-
+    orderTime: Number,
   },
   { timestamps: true }
 );
