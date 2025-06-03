@@ -9,3 +9,14 @@ export async function getAllOrders() {
     return null;
   }
 }
+
+export async function getOrdersByUserId(userId) {
+  try {
+    const userOrders = await Order.find({userId});
+    return userOrders;
+  } catch (error) {
+    console.error(error.message);
+    return null;
+  }
+}
+

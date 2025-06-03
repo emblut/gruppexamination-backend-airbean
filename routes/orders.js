@@ -5,7 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { getCartById } from '../services/cart.js';
 import { calculateTotal } from '../utils/cartUtils.js';
 import { calculateTime } from '../utils/orderUtils.js';
-import { getAllOrders } from '../services/orders.js';
+import { getAllOrders, getOrdersByUserId } from '../services/orders.js';
+import { checkIfUserExists } from '../services/users.js';
 
 const router = Router();
 
@@ -62,4 +63,27 @@ router.get('/', async (req, res, next) => {
 
 // GET user orders
 
-// router.get('/:userId', )
+router.get('/:userId', async (req, res, next) => {
+  const { userId } = req.params;
+
+  const userExists = await checkIfUserExists(userId);
+  if (userExists) {
+    const userOrders = await getOrdersByUserId(userId);
+    if (userOrders && userOrders.length > 0) {
+      res.json({
+        success: true,
+        orders: userOrders,
+      });
+    } else {
+      res.json({
+        success: true,
+        orders: 'No orders yet',
+      });
+    }
+  } else {
+    next({
+      status: 400,
+      message: 'No user with that ID found',
+    });
+  }
+});
