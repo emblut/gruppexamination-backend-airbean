@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
-import Order from '../models/Order.js';
+import Order from '../models/order.js';
 import { getCartById } from '../services/cart.js';
 import { calculateTotal } from '../utils/cartUtils.js';
 import { calculateTime } from '../utils/orderUtils.js';
