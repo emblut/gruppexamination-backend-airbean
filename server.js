@@ -5,7 +5,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import authRouter from './routes/auth.js';
 import menuRouter from './routes/menu.js';
 import cartRouter from './routes/cart.js';
-import orderRouter from './routes/orders.js'
+import orderRouter from './routes/orders.js';
 
 // CONFIG
 dotenv.config();
@@ -24,7 +24,7 @@ app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
 
 database.on('error', (error) => {
-
+  console.error(error);
 });
 
 database.once('connected', () => {

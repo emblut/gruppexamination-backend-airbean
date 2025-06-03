@@ -1,7 +1,8 @@
 import Product from '../models/product.js';
 
 export async function getAllProducts() {
-  return await Product.find();
+  const allProducts = await Product.find();
+  return allProducts;
 }
 
 export async function getProduct(prodId) {
@@ -10,6 +11,6 @@ export async function getProduct(prodId) {
     return product;
   } catch (error) {
     console.log(error.message);
-    return null; /* fråga om det inte bör vara next ist */
+    return null;
   }
 }
