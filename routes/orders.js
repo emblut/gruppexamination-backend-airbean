@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import Order from '../models/Order.js';
-import Cart from '../models/cart.js';
 import { v4 as uuid } from 'uuid';
+import Order from '../models/Order.js';
 import { getCartById } from '../services/cart.js';
 import { calculateTotal } from '../utils/cartUtils.js';
 import { calculateTime } from '../utils/orderUtils.js';
@@ -62,7 +61,6 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET user orders
-
 router.get('/:userId', async (req, res, next) => {
   const { userId } = req.params;
 

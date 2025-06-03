@@ -12,11 +12,10 @@ export async function getAllOrders() {
 
 export async function getOrdersByUserId(userId) {
   try {
-    const userOrders = await Order.find({userId});
+    const userOrders = await Order.find({ userId });
     return userOrders;
   } catch (error) {
     console.error(error.message);
     return null;
   }
 }
-

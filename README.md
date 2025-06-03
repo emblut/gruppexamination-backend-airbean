@@ -1,3 +1,5 @@
+Länk till våra [protokoll](https://docs.google.com/document/d/1-mBPtD7eAFldhDcizoohj4CJ8XRISGdYNQJnY_biidc/edit?tab=t.0#heading=h.8mm0oodu45l3)
+
 # ☕ Bygg ett API för Airbean!
 
 Airbean är den futuristiska kaffebaren där kaffe levereras med drönare (nåja… nästan!). I detta **grupparbete** ska ni bygga ett backend-API som gör det möjligt att lägga beställningar – men bara själva API:t. **Ingen frontend** ska byggas.
